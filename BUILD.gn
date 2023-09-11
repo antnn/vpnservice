@@ -1,0 +1,45 @@
+import("//build/rust/rust_static_library.gni")
+
+
+static_library("vpn_cpp_library") {
+  testonly = true
+  sources = [
+    "vpn_cpp_lib.cc",
+    "vpn_cpp_lib.h",
+  ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//vpnservice/services/vpn/",
+    "//mojo/core/embedder",
+    "//mojo/public/cpp/base",
+  ]
+}
+
+rust_static_library("vpn_rust_calling_cpp_rlib") {
+  testonly = true
+  sources = [ "vpn_rust_calling_cpp_rlib.rs" ]
+  crate_root = "vpn_rust_calling_cpp_rlib.rs"
+  cxx_bindings = [ "vpn_rust_calling_cpp_rlib.rs" ]
+  allow_unsafe = true
+  deps = [ ":vpn_cpp_library" ]
+}
+
+executable("vpnservice") {
+  testonly = true
+  deps = [ ":vpn_rust_calling_cpp_rlib" ]
+  sources = [ "main.cc" ]
+}
+
+
+# executable("vpnservice") {
+#   testonly = true
+#   sources = [ "mojo.cc" ]
+#   deps = [
+#     "//base",
+#     "//base/test:test_support",
+#     "//vpnservice/services/vpn/",
+#     "//mojo/core/embedder",
+#     "//mojo/public/cpp/base",
+#   ]
+# }
