@@ -1,6 +1,7 @@
 // Copyright 2023 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+// https://github.com/chromium/chromium/blob/main/tools/crates/README.md
 use std::env;
 use std::ffi::CString;
 use std::os::raw::c_char;
