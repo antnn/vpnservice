@@ -22,7 +22,10 @@ rust_static_library("vpn_rust_calling_cpp_rlib") {
   crate_root = "vpn_rust_calling_cpp_rlib.rs"
   cxx_bindings = [ "vpn_rust_calling_cpp_rlib.rs" ]
   allow_unsafe = true
-  deps = [ ":vpn_cpp_library" ]
+  deps = [ ":vpn_cpp_library",
+  "//third_party/rust/tokio/v1:lib",
+  "//third_party/rust/base64/v0_21:lib",
+  "//third_party/rust/tokio_tun/v0_9:lib" ]
 }
 
 executable("vpnservice") {
