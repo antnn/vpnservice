@@ -53,10 +53,9 @@ pub fn rust_calling_cpp() {
         .block_on(main_async());
 }
 
-
 use base64::write::EncoderStringWriter;
 
-use std::io::{/*Read,*/ Write};
+use std::io::Write;
 use std::net::Ipv4Addr;
 use std::os::fd::AsRawFd;
 
@@ -67,12 +66,10 @@ use tokio_tun::Tun;
 use base64::engine::general_purpose;
 //use base64::read::DecoderReader;
 
-//type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
+//type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send +
+// Sync>>;
 
-
-const IP_NET:&'static str ="10.1.0.0/24";
-
-
+const IP_NET: &'static str = "10.1.0.0/24";
 
 async fn main_async() {
     let queues = 3;
@@ -101,7 +98,9 @@ async fn main_async() {
     println!(
         "┌ name: {}\n├ fd: {}, {}, {}\n├ mtu: {}\n├ flags: {}\n├ address: {}\n├ destination: {}\n├ broadcast: {}\n└ netmask: {}",
         tuns[0].name(),
-        tuns[0].as_raw_fd(), tuns[1].as_raw_fd(), tuns[2].as_raw_fd(),
+        tuns[0].as_raw_fd(),
+        tuns[1].as_raw_fd(),
+        tuns[2].as_raw_fd(),
         tuns[0].mtu().unwrap(),
         tuns[0].flags().unwrap(),
         tuns[0].address().unwrap(),
@@ -143,12 +142,12 @@ async fn main_async() {
         //let url = url.parse().unwrap();
         //let response = fetch_json(url).await.unwrap();
 
-        //let mut dec = DecoderReader::new(response.reader(), &general_purpose::URL_SAFE);
-        //let mut data = Vec::<u8>::with_capacity(3000);
+        //let mut dec = DecoderReader::new(response.reader(),
+        // &general_purpose::URL_SAFE); let mut data =
+        // Vec::<u8>::with_capacity(3000);
 
         //dec.read_to_end(&mut data).unwrap();
         //println!("decoded {:?}", data);
-
 
         let d: [u8; 84] = [
             69, 0, 0, 84, 95, 57, 64, 0, 64, 1, 207, 108, 10, 1, 0, 1, 1, 1, 1, 1, 8, 0, 254, 226,
@@ -157,22 +156,19 @@ async fn main_async() {
             42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55,
         ];
 
-        if buf[9] == 1 { // Protocol Type == ICMP
+        if buf[9] == 1 {
+            // Protocol Type == ICMP
             std::thread::sleep(Duration::from_millis(4000));
             println!("\nsent {:?}\n", d);
             tun0.send(&d).await.unwrap();
             std::thread::sleep(Duration::from_millis(500));
             std::process::exit(0);
         }
-
-
-
     }
 }
 
 use std::process::Command;
 fn setup_forwarding() {
-
     println!("--------------");
     println!("Enable forwarding in proc",);
     println!("--------------");
@@ -183,7 +179,6 @@ fn setup_forwarding() {
 
     assert!(status.success());
 }
-
 
 fn disable_rp_filter() {
     println!("--------------");
@@ -199,11 +194,11 @@ fn disable_rp_filter() {
 
 fn masquerade() {
     println!("--------------");
-    println!("Masquerade for {}",IP_NET);
+    println!("Masquerade for {}", IP_NET);
     println!("--------------");
     //nft add rule inet firewalld nat_POSTROUTING iif tun0 masquerade
     let status = Command::new("iptables")
-        .args(["-t","nat", "-A" ,"POSTROUTING", "-s", IP_NET, "-j", "MASQUERADE"])
+        .args(["-t", "nat", "-A", "POSTROUTING", "-s", IP_NET, "-j", "MASQUERADE"])
         .status()
         .expect("Failed to Masquerade");
 
