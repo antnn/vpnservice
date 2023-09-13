@@ -15,7 +15,13 @@
 #include "base/test/test_timeouts.h"
 #include "mojo/core/embedder/embedder.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "services/network/public/mojom/network_service.mojom.h"
 #include "vpnservice/services/vpn/vpn_service.h"
+
+mojo::Remote<network::mojom::NetworkService>* g_network_service_remote =
+    nullptr;
+
+network::mojom::NetworkService* GetNetworkService();
 
 int vpn_main_cpp(int argc, char* argv[]) {
   base::AtExitManager exit_manager;
@@ -62,5 +68,23 @@ int vpn_main_cpp(int argc, char* argv[]) {
   int32_t quotient = future.Get();
   LOG(INFO) << "Quotient: " << quotient;
 
+  GetNetworkService();
   return 0;
+}
+
+void OnNetworkServiceCrash() {}
+
+network::mojom::NetworkService* GetNetworkService() {
+  if (!g_network_service_remote) {
+    g_network_service_remote = new mojo::Remote<network::mojom::NetworkService>;
+  }
+  if (!g_network_service_remote->is_bound() ||
+      !g_network_service_remote->is_connected()) {
+    mojo::PendingReceiver<network::mojom::NetworkService> receiver =
+        g_network_service_remote->BindNewPipeAndPassReceiver();
+    g_network_service_remote->set_disconnect_handler(
+        base::BindOnce(&OnNetworkServiceCrash));
+    // CreateInProcessNetworkService(std::move(receiver));
+  };
+  return g_network_service_remote->get();
 }

@@ -12,6 +12,8 @@ static_library("vpn_cpp_library") {
     "//mojo/core/embedder",
     "//mojo/public/cpp/base",
     "//vpnservice/services/vpn/",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom"
   ]
 }
 
