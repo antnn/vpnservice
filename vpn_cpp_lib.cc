@@ -1,4 +1,4 @@
-// Copyright 2023 The Chromium Authors
+’5// Copyright 2023 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -88,3 +88,26 @@ network::mojom::NetworkService* GetNetworkService() {
   };
   return g_network_service_remote->get();
 }
+
+
+void msetnrtworlvontext( mojo::PendingReceiver<network::mojom::NetworkContext> context,
+    network::mojom::NetworkContextParamsPtr params,
+    SandboxGrantResult grant_access_result) {
+      if (!network_context_ || !network_context_.is_connected()) {
+      network_context_.reset();
+      content::CreateNetworkContextInNetworkService(
+          network_context_.BindNewPipeAndPassReceiver(),
+          CreateNetworkContextParams());
+
+  
+  auto* network_service = GetNetworkService();
+  network_service->CreateNetworkContext(std::move(context), std::move(params));
+}
+
+
+
+
+
+
+
+
