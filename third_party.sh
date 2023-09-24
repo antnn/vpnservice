@@ -1,5 +1,7 @@
 #!/bin/bash
 # add third party
+cd src
+tools/rust/gnrt_stdlib.py
 
 out/gnrt/target/release/gnrt download --security-critical=yes --shipped=yes tokio 1.28.2
 out/gnrt/target/release/gnrt download --security-critical=yes --shipped=yes thiserror 1.0.40
