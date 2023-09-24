@@ -23,3 +23,5 @@ out/gnrt/release/gnrt download --security-critical=yes --shipped=yes smallvec 1.
 out/gnrt/release/gnrt download --security-critical=yes --shipped=yes parking_lot 0.12.1
 out/gnrt/release/gnrt download --security-critical=yes --shipped=yes signal-hook-registry 1.4.1
 out/gnrt/release/gnrt download --security-critical=yes --shipped=yes scopeguard 1.2.0
+
+ vpython3 ./tools/crates/run_gnrt.py
