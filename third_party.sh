@@ -23,5 +23,8 @@ out/gnrt/release/gnrt download --security-critical=yes --shipped=yes smallvec 1.
 out/gnrt/release/gnrt download --security-critical=yes --shipped=yes parking_lot 0.12.1
 out/gnrt/release/gnrt download --security-critical=yes --shipped=yes signal-hook-registry 1.4.1
 out/gnrt/release/gnrt download --security-critical=yes --shipped=yes scopeguard 1.2.0
+out/gnrt/release/gnrt download --security-critical=yes --shipped=yes tokio-tun 0.9.0
+out/gnrt/release/gnrt download --security-critical=yes --shipped=yes base64 0.21.0
 
- vpython3 ./tools/crates/run_gnrt.py
+out/gnrt/release/gnrt gen
+gn gen out/Debug/
